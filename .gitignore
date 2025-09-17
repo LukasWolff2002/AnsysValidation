@@ -1,4 +1,7 @@
 PIVData/
 PTVData/
-AnsysData/CarbopolSolution/
-AnsysData/CarbopolAnimation/
+AnsysData/*
+!AnsysData/Modelo.dsco
+!AnsysData/Mesh.mechdb
+!AnsysData\carbopol_fluent.cas.h5
+
