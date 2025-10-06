@@ -59,7 +59,7 @@ def procesar_fases(base_dir: str, fases: List[Dict[str, Any]]) -> None:
 
         # Validaciones
         if not dest or blocks_max <= 0:
-            print(f"[F{K}] Fase inválida: destino vacío o blocks<=0, se omite.")
+            print(f"[F{k}] Fase inválida: destino vacío o blocks<=0, se omite.")
             continue
         if skip_final <= skip_inter:
             raise ValueError(f"[F{k}] 'skip_final' ({skip_final}) debe ser MAYOR que 'skip_inter' ({skip_inter}).")
