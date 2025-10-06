@@ -21,8 +21,8 @@ OVERWRITE    = True   # True: sobrescribe si ya existe en destino; False: salta 
 FASES: List[Dict[str, Any]] = [
     # Ejemplos:
     {"dest": "PIVData/2_CADA_22", "blocks": 20, "skip_inter": 0, "skip_final": 22, "block_size": 24},
-    {"dest": "PIVData/2_CADA_21",       "blocks": 80, "skip_inter": 1, "skip_final": 21, "block_size": 24},
-    # Agrega más fases aquí...
+    {"dest": "PIVData/2_CADA_21",       "blocks": 20, "skip_inter": 1, "skip_final": 21, "block_size": 24},
+    {"dest": "PIVData/2_CADA_20",       "blocks": 180, "skip_inter": 2, "skip_final": 20, "block_size": 24},
 ]
 
 # ========= Utilidades =========

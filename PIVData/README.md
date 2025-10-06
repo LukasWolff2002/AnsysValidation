@@ -11,6 +11,15 @@ El método PIV compara pares de imágenes. Si el fluido presenta muy poca veloci
 - **Últimos 18 segundos:** Se incluyen 2 imágenes intermedias entre cada par.
 
 Este enfoque permite capturar adecuadamente las variaciones de velocidad del fluido a lo largo del experimento.
+## PIV L
+
+En todos los análisis PIV se aplicaron tres tamaños de caja: **64 mm**, **32 mm** y **16 mm**, utilizando un algoritmo de tipo *high*. Los resultados están disponibles en la siguiente carpeta: [Resultados PIV L](https://www.dropbox.com/home/TESIS/Resultados%20PIV/L).
+
+**Conversión de escala para cada toma:**
+
+- **Toma 1:** 81.28 px = 100 mm
+- **Toma 2:** x px = y mm
+- **Toma 3:** x px = y mm
 
 ## PIV Viga
 
@@ -27,7 +36,7 @@ project = rf.workspace("particle-tracking-velocimetry").project("dynamicmask-93z
 version = project.version(1)
 dataset = version.download("yolov11")
 ```
-
+El repositorio de GitHub está disponible en [este enlace](https://github.com/LukasWolff2002/DynamicMask).
 **Consideraciones:**
 
 - El modelo de segmentación utiliza las partículas de seguimiento para identificar la zona de contacto con el acrílico. Por lo tanto, es fundamental asegurar una concentración adecuada de partículas en la mezcla.
@@ -39,6 +48,3 @@ dataset = version.download("yolov11")
 - La conversión de píxeles a milímetros es de **80.54 px = 10 mm**.
 - Se consideran cajas de **64 px**, **32 px** y **16 px** para el análisis, empleando un enfoque tipo *high*.
 
-
-
-## PIV L
