@@ -1,0 +1,49 @@
+Auto-Transcript Start Time:  10:23:02, 25 Sep 2025 Hora verano Sudamérica Pacífico 
+Current Directory: "C:\Users\MBX\Desktop\AnsysValidation\AnsysData"
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "DESKTOP-0A59SBN" (win64).
+
+----------------------------------------------------------------------------------------
+ID    Hostname         Core  O.S.         PID    Vendor                                
+----------------------------------------------------------------------------------------
+n3    DESKTOP-0A59SBN  4/32  Windows-x64  37544  AMD Ryzen 9 9950X 16-Core Processor   
+n2    DESKTOP-0A59SBN  3/32  Windows-x64  36984  AMD Ryzen 9 9950X 16-Core Processor   
+n1    DESKTOP-0A59SBN  2/32  Windows-x64  35984  AMD Ryzen 9 9950X 16-Core Processor   
+n0*   DESKTOP-0A59SBN  1/32  Windows-x64  16428  AMD Ryzen 9 9950X 16-Core Processor   
+host  DESKTOP-0A59SBN        Windows-x64  35180  AMD Ryzen 9 9950X 16-Core Processor   
+
+MPI Option Selected: intel
+Selected system interconnect: default
+----------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\MBX\\Desktop\\AnsysValidation\\AnsysData\\cleanup-fluent-DESKTOP-0A59SBN-35180.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+
+> (cx-use-window-id 51)
+/exit y
+
+Posting ANSYS Product Improvement Program performance data 
+Done.
+Auto-Transcript Stop Time:  10:23:50, 25 Sep 2025 Hora verano Sudamérica Pacífico 
+Total Transcript Time: 0 Minute 47 Second.

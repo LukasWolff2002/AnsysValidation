@@ -1,0 +1,403 @@
+Auto-Transcript Start Time:  11:08:04, 29 Sep 2025 Hora verano Sudamérica Pacífico 
+Current Directory: "C:\Users\MBX\Desktop\AnsysValidation\AnsysData"
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "DESKTOP-0A59SBN" (win64).
+
+----------------------------------------------------------------------------------------
+ID    Hostname         Core  O.S.         PID    Vendor                                
+----------------------------------------------------------------------------------------
+n3    DESKTOP-0A59SBN  4/32  Windows-x64  25840  AMD Ryzen 9 9950X 16-Core Processor   
+n2    DESKTOP-0A59SBN  3/32  Windows-x64  38836  AMD Ryzen 9 9950X 16-Core Processor   
+n1    DESKTOP-0A59SBN  2/32  Windows-x64  37660  AMD Ryzen 9 9950X 16-Core Processor   
+n0*   DESKTOP-0A59SBN  1/32  Windows-x64  32300  AMD Ryzen 9 9950X 16-Core Processor   
+host  DESKTOP-0A59SBN        Windows-x64  12652  AMD Ryzen 9 9950X 16-Core Processor   
+
+MPI Option Selected: intel
+Selected system interconnect: default
+----------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\MBX\\Desktop\\AnsysValidation\\AnsysData\\cleanup-fluent-DESKTOP-0A59SBN-12652.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+Fast-loading "C:\PROGRA~1\ANSYSI~1\ANSYSS~1\v252\fluent\fluent25.2.0\\addons\afd\lib\hdfio.bin"
+Done.
+Multicore SMT processors detected. Processor affinity set!
+
+Reading from DESKTOP-0A59SBN:"C:/Users/MBX/Desktop/AnsysValidation/AnsysData/carbopol_fluent.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+       26116 cells,     3 cell zones ...
+          11600 mixed cells,  zone id: 8
+           3927 mixed cells,  zone id: 9
+          10589 mixed cells,  zone id: 10
+       82087 faces,     9 face zones ...
+            770 quadrilateral interior faces,  zone id: 1
+             48 quadrilateral interior faces,  zone id: 2
+          32797 mixed interior faces,  zone id: 3
+          10553 mixed interior faces,  zone id: 4
+          29999 mixed interior faces,  zone id: 5
+           1383 mixed pressure-outlet faces,  zone id: 11
+           2666 mixed wall faces,  zone id: 12
+           3667 mixed wall faces,  zone id: 13
+            204 quadrilateral pressure-inlet faces,  zone id: 14
+       29993 nodes,     1 node zone  ...
+  Done.
+
+
+Building...
+     mesh
+	distributing mesh
+		parts....,
+		faces....,
+		nodes....,
+		cells....,
+        bandwidth reduction using Reverse Cuthill-McKee: 6472/224 = 28.8929
+     materials,
+     interface,
+     domains,
+	mixture
+	phase-air
+	phase-carbopol
+	interaction
+     zones,
+	interior-lvolumen  (phase-carbopol)
+	interior-lvolumen  (phase-air)
+	interior-airvolumen  (phase-carbopol)
+	interior-airvolumen  (phase-air)
+	interior-beamvolumen  (phase-carbopol)
+	interior-beamvolumen  (phase-air)
+	airoutlet  (phase-carbopol)
+	airoutlet  (phase-air)
+	beamwall  (phase-carbopol)
+	beamwall  (phase-air)
+	lwall  (phase-carbopol)
+	lwall  (phase-air)
+	airinlet  (phase-air)
+	airinlet  (phase-carbopol)
+	airvolumen  (phase-air)
+	airvolumen  (phase-carbopol)
+	beamvolumen  (phase-air)
+	beamvolumen  (phase-carbopol)
+	lvolumen  (phase-air)
+	lvolumen  (phase-carbopol)
+	interior-airvolumen-lvolumen  (phase-air)
+	interior-airvolumen-lvolumen  (phase-carbopol)
+	interior-airvolumen-beamvolumen  (phase-air)
+	interior-airvolumen-beamvolumen  (phase-carbopol)
+	lwall
+	beamwall
+	airoutlet
+	interior-beamvolumen
+	interior-airvolumen
+	interior-lvolumen
+	airinlet
+	interior-airvolumen-lvolumen
+	interior-airvolumen-beamvolumen
+	airvolumen
+	beamvolumen
+	lvolumen
+     parallel,
+Done.
+
+> (cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 0 1 2 3 4 5 6))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-set-toggle-button2 "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton1(Nodes)" #t)
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton1(Nodes)")
+(cx-gui-do cx-set-toggle-button2 "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton2(Edges)" #t)
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton2(Edges)")
+(cx-gui-do cx-set-toggle-button2 "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton1(Nodes)" #f)
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame1*Frame1*ToggleBox1(Options)*CheckButton1(Nodes)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 0 2 3 4 5 6))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 0 3 4 5 6))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 3 4 5 6))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 3 4 6))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 3 4))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-use-window-id 51)
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 2 3 4))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 2))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton2(Cancel)")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 0 1 2 3 4))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-set-list-selections "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)" '( 0 1 2 3 4 5))
+(cx-gui-do cx-activate-item "Mesh Display*Table1*Frame3*Frame1*List1(Surfaces)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton2(Cancel)")
+(cx-use-window-id 51)
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Initialize")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Patch...")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)" '( 2))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)" '( 3))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame3*List3(Registers to Patch)" '( 0))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame3*List3(Registers to Patch)")
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton3(Patch)")
+9104 cells marked
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton1(Close)")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-carbopol"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Error: An error or interrupt occurred in the previous operation.
+       Details have been printed to the text console transcript.
+Error Object: #f
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-carbopol"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Error: An error or interrupt occurred in the previous operation.
+       Details have been printed to the text console transcript.
+Error Object: #f
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Calculation Activities"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Initialize")
+(cx-gui-do cx-activate-item "Question*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Patch...")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)" '( 2))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)" '( 3))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)")
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton3(Patch)")
+9104 cells marked
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton4(Smooth)")
+
+Information : Executed volumetric smoothing of volume fraction for all the phases in full domain.
+    Warning : Multiple execution would lead to multiple levels of smoothing.
+
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton1(Close)")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-carbopol"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Error: An error or interrupt occurred in the previous operation.
+       Details have been printed to the text console transcript.
+Error Object: #f
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Error: An error or interrupt occurred in the previous operation.
+       Details have been printed to the text console transcript.
+Error Object: #f
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours"))
+(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours"))
+(cx-gui-do cx-set-list-selections "Contours*Table1*Frame3*Table1*DropDownList1(Contours of)" '( 9))
+(cx-gui-do cx-activate-item "Contours*Table1*Frame3*Table1*DropDownList1(Contours of)")
+(cx-gui-do cx-set-list-selections "Contours*Table1*Frame3*Table1*DropDownList3(Phase)" '( 1))
+(cx-gui-do cx-activate-item "Contours*Table1*Frame3*Table1*DropDownList3(Phase)")
+(cx-gui-do cx-set-list-selections "Contours*Table1*Frame3*Frame2*List2(Surfaces)" '( 6))
+(cx-gui-do cx-activate-item "Contours*Table1*Frame3*Frame2*List2(Surfaces)")
+(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton2(Cancel)")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Models|Multiphase (Eulerian)"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list ))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions"))
+(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|Boundary Conditions"))
+(cx-gui-do cx-set-list-selections "Boundary Conditions*Table1*List2(Zone)" '( 0))
+(cx-gui-do cx-activate-item "Boundary Conditions*Table1*List2(Zone)")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Mesh Display*PanelButtons*PushButton2(Cancel)")
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-use-window-id 51)
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-carbopol"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-carbopol"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Unable to parse:  
+
+Error: undefined read macro
+Error Object: ()
+
+Error: An error or interrupt occurred in the previous operation.
+       Details have been printed to the text console transcript.
+Error Object: #f
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))
+(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Results|Graphics|Contours|contour-1"))
+(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Contours*PanelButtons*PushButton2(Cancel)")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|General"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|General"))
+(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Setup|General"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))
+(cx-gui-do cx-activate-item "NavigationPane*Frame2*Table1*List_Tree2")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Run Calculation"))
+ Error in the fluent (fl) process : ended abnormally
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 0 PID 32300 RUNNING AT DESKTOP-0A59SBN
+=   EXIT STATUS: 1073807364 (40010004)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 1 PID 37660 RUNNING AT DESKTOP-0A59SBN
+=   EXIT STATUS: 1073807364 (40010004)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 2 PID 38836 RUNNING AT DESKTOP-0A59SBN
+=   EXIT STATUS: 1073807364 (40010004)
+===================================================================================
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   RANK 3 PID 25840 RUNNING AT DESKTOP-0A59SBN
+=   EXIT STATUS: 1073807364 (40010004)
+===================================================================================

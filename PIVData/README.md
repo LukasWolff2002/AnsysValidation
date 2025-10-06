@@ -17,8 +17,8 @@ En todos los análisis PIV se aplicaron tres tamaños de caja: **64 mm**, **32 m
 
 **Conversión de escala para cada toma:**
 
-- **Toma 1:** 81.28 px = 100 mm
-- **Toma 2:** x px = y mm
+- **Toma 1:** 81.28 px = 10 mm
+- **Toma 2:** 87.61 px = 10 mm
 - **Toma 3:** x px = y mm
 
 ## PIV Viga
