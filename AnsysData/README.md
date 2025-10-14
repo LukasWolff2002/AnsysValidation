@@ -14,4 +14,4 @@
     _Esta altura considera la diferencia entre la medición inicial y el descenso por la extracción del tapón._
 
 ## 📁 Archivos de malla
-- Los archivos .cas para las mallas con dodecaedros están en: [Dropbox — TESIS/Mallas](https://www.dropbox.com/home/TESIS/Mallas)
+- Los archivos .cas para las mallas con dodecaedros están en: [Dropbox — TESIS/Mallas](https://www.dropbox.com/scl/fo/ebibvj7g3nwi5ex850f3v/AL0ON88lwyrcOp1ojLEMf3I?rlkey=6ff8f0ladc0mnpi5s61nxnwyw&st=tn5op4h2&dl=0)
