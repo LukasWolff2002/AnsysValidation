@@ -1,0 +1,68 @@
+% /Users/lukaswolff/Desktop/AnsysValidation/TestLukas/informe.tex
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    stringstyle=\color{blue},
+    commentstyle=\color{gray}\itshape,
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    captionpos=b
+}
+
+\title{Pyfluent apuntes Lukas W}
+\author{ }
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+En primer lugar es nesesario encontrar donde se encuentra la carpeta de fluent, por ejemplo:
+
+\begin{lstlisting}[language=Python]
+    "C:\Program Files\ANSYS Inc\ANSYS Student\v252\fluent\ntbin\win64\fluent.exe"
+\end{lstlisting}
+
+Es decir, en este caso tengo la version 2025 R2 de ansys student.
+
+Hay que crear una carpeta temporal donde se alojara la sesion de fluent, abrir la terminal de windows (cmd) y escribir:
+
+\begin{lstlisting}[language=Python]
+    mkdir C:\Temp
+\end{lstlisting}
+
+Luego hay que ejectuar en la terminal lo siguiente:
+
+\begin{lstlisting}[language=Python]
+    & "C:\Program Files\ANSYS Inc\ANSYS Student\v252\fluent\ntbin\win64\fluent.exe" 3ddp -g -server -sifile="C:\Temp\fluent-serverinfo.txt"
+
+\end{lstlisting}
+
+Lo cual inicia Fluent 3D sin interfaz grafica y en modo servidor, lo cual deja escuchando para una conexion remota desde python.
+
+Para cerrar Fluent, simplemente hay que escribir en la consola:
+
+\begin{lstlisting}[language=Python]
+    exit
+\end{lstlisting}
+
+\textbf{Importante:} la version de python a usar debe ser 3.11.9, para eso, se recomienda generar un entorno virtual de python con esa version. Para eso, se recomienda usar Anaconda, preguntar a ChatGPT el paso a paso.
+
+\end{document}
