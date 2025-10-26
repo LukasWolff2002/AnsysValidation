@@ -1,0 +1,18 @@
+# encoding: utf-8
+# 2025 R2
+SetScriptVersion(Version="25.2.170")
+Mechanical.CreateDiscoMechanicalModelSystemWithActiveCAD(
+    FilePath=r"C:\Users\lkwol\OneDrive\Desktop\AnsysValidation\AnsysData\Modelo.dsco",
+    PlugInName="Discovery[24136]",
+    ConnectionServicePort=58678)
+system1 = GetSystem(Name="Mechanical Model")
+engineeringDataComponent1 = system1.GetComponent(Name="Engineering Data")
+system2 = system1.Duplicate(
+    ComponentsToShare=[engineeringDataComponent1],
+    RelativeTo=system1)
+system2.Delete()
+modelComponent1 = system1.GetComponent(Name="Model")
+modelComponent1.Refresh()
+model1 = system1.GetContainer(ComponentName="Model")
+model1.Edit()
+Save(Overwrite=True)

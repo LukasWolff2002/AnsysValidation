@@ -1,0 +1,342 @@
+Auto-Transcript Start Time:  18:12:03, 21 Sep 2025 Hora verano Sudamérica Pacífico 
+Current Directory: "C:\Users\lkwol\AppData\Local\Temp\WB_lkwol_24832_2\wbnew_files\dp0\SYS\DM"
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "Frodo" (win64).
+
+--------------------------------------------------------------------------------------
+ID    Hostname  Core  O.S.         PID    Vendor                                     
+--------------------------------------------------------------------------------------
+n3    Frodo     4/16  Windows-x64  8428   AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n2    Frodo     3/16  Windows-x64  26432  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n1    Frodo     2/16  Windows-x64  20084  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n0*   Frodo     1/16  Windows-x64  8084   AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+host  Frodo           Windows-x64  24992  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+
+MPI Option Selected: intel
+Selected system interconnect: default
+--------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\cleanup-fluent-Frodo-24992.bat
+
+Graphics driver currently in use: dx11
+
+(cx-gui-do cx-activate-tab-index "NavigationPane*Frame1(TreeTab)" 0)
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+
+Reading journal file C:\Users\lkwol\AppData\Local\Temp\47df4988-67e6-441e-abcf-08ea4756bdd4.jou...
+
+> /file/set-tui-version "25.2"
+
+> (%py-exec "workflow.CreateNewWorkflow()")
+()
+
+
+> (%py-exec "workflow.InsertNewTask(CommandName = r'ImportCadFaceting')")
+()
+
+
+> (%py-exec "workflow.TaskObject['Import Geometry'].Arguments.setState({r'FileName': r'C:\Users\lkwol\AppData\Local\Temp\WB_lkwol_24832_2\wbnew_files\dp0\SYS\DM\SYS.dsco', r'LengthUnit': r'mm',})")
+()
+
+
+> (%py-exec "workflow.TaskObject['Import Geometry'].Execute()")
+
+Importing one geom object per program-controlled and one zone per body ...
+    C:\\Program Files\\ANSYS Inc\\ANSYS Student\\v252\\commonfiles\\CPython\\3_10\\winx64\\Release\\python\\..\\Ansys\\TGrid\\CADReaders.py started by lkwol on Frodo winx64 on Sun Sep 21 18:13:04 2025
+    using Python 3.10.16 (remotes/origin/14d18b8e2626165312e076b70cf60f0faa8db8d5-dirty:14d18b8e, May 20 2) [MSC v.1942 64 bit (AMD64)]
+    
+    using Ansys.Meshing.FieldMesher build Jun 13 2025 15:24:50
+    
+    running ANSYS TGrid CADToTGridConverter ...
+    setting up parameters ...
+    setting up parameters done.
+    running conversion ...
+    converting 1 file(s) from Workbench to FLTG using output path 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\FM_Frodo_24160/out1758489164.83749524160.tgf'
+    converting file 'SYS.dsco' (1 of 1) from Workbench to FLTG using output path 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\FM_Frodo_24160'
+    importing data ...
+    importing meshing model from PartMgr from file 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\SYS.dsco' ...
+    setting enclosure and symmetry processing to False
+    setting transfer named selections to True
+    setting named selection prefixes to ''
+    setting mixed import resolution type to 'SolidAndSurface'
+    setting target application to 'FluentMeshing'
+    attaching to assembly ...
+    attaching to assembly done in 20.071 [s]
+    processing assembly 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\SYS.dsco' with ID 1 and reference key '<?xml version="1.0" encoding="utf-16"?>
+    <IdTable xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <Table>
+        <Entry>
+          <AssemblyVersionInfo>
+            <AssemblySavedVersion>2147483647</AssemblySavedVersion>
+            <AssemblySavedBuildDate>2147483647</AssemblySavedBuildDate>
+            <IsLegacyLabel>false</IsLegacyLabel>
+          </AssemblyVersionInfo>
+          <Text>~sO_~iIfc2d1457-450d-46ed-9a9e-894a30ed94ca.2593_#~oEfc2d1457-450d-46ed-9a9e-894a30ed94ca.2589_#_</Text>
+          <Id>10000</Id>
+          <IsExploded>false</IsExploded>
+        </Entry>
+      </Table>
+      <AssemblyVersionInfo>
+        <AssemblySavedVersion>2147483647</AssemblySavedVersion>
+        <AssemblySavedBuildDate>2147483647</AssemblySavedBuildDate>
+        <IsLegacyLabel>false</IsLegacyLabel>
+      </AssemblyVersionInfo>
+    </IdTable>'
+    length unit = [m]
+    processing part 'Volume' with ID 3
+    processing data ...
+    removing named collections of entities ...
+    removing named collections of entities stopped, no named collections selected.
+    analyzing feature edges ...
+    detecting feature edges, feature angle = 40 [deg] ...
+        Data information
+            Meshing model
+                Attributes:
+                    'LengthUnit': '[mm]'
+                Entity summary:
+                    Component: 2
+                    Body     : 6
+                    Shell    : 6
+                    Face     : 33
+                    Loop     : 33
+                    Edge     : 60
+                    Vertex   : 34
+                    Surface  : 33
+                    Curve    : 60
+                Tessellation summary:
+                    Face facets  : 76
+                    Edge segments: 60
+                Bounding box:
+                    (0, -37, -81) x (457.0000000000001, 37.00000000000039, 294)
+                Assembly component hierarchy:
+                    'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\SYS.dsco'
+                      'Volume'
+    
+    
+    exporting FLTG data to file 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\FM_Frodo_24160\\out1758489164.83749524160.tgf' ...
+    writing face-based mesh file 'C:\\Users\\lkwol\\AppData\\Local\\Temp\\WB_lkwol_24832_2\\wbnew_files\\dp0\\SYS\\DM\\FM_Frodo_24160\\out1758489164.83749524160.tgf' ...
+    ======== Exported Data ========
+    Entity summary:
+        Object       : 1
+        Object region: 6
+        Zone         : 25
+    
+    running conversion done.
+    running ANSYS TGrid CADToTGridConverter done.
+    ran ANSYS TGrid CADToTGridConverter in 20.147 [s]
+
+Reading "C:\Users\lkwol\AppData\Local\Temp\WB_lkwol_24832_2\wbnew_files\dp0\SYS\DM\FM_Frodo_24160/out1758489164.83749524160.tgf"...
+
+nodes: 74
+edges: 60
+faces: 76
+cells: 0
+generating pointers...done.
+extracting boundary entities...
+ 74 boundary nodes.
+ 76 boundary faces.
+ 12 boundary face zones.
+done.
+analyzing boundary connectivity...done.
+
+using plugIn session Discovery[22900]
+
+---------------- Import of SYS, consisting of one single part/object , complete. 
+ 
+
+---------------- Import complete in  0.76 minutes.
+()
+
+
+> 
+Meshing> (cx-gui-do cx-activate-item "Color Theme Change*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Key Behavioral Changes*PanelButtons*PushButton1(OK)")
+(cx-use-window-id 51)
+(cx-set-camera-relative '(-704.508 -2524.63 656.811) '(0 0 0) '(0.574387 0.131803 1.03917) 0 0)
+(cx-use-window-id 51)
+(cx-set-camera-relative '(-549.638 -256.493 -189.759) '(0 0 0) '(0.0135797 -0.112193 0.142117) 0 0)
+(cx-gui-do cx-activate-item "MenuBar*MeshMenu*Rapid Octree...")
+(cx-gui-do cx-activate-item "Rapid Octree*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-item "Question*OK")
+WARNING: Changing thread-type for "origin-lvolumenair:lvolumenmixture" from geometry to wall.WARNING: Changing thread-type for "origin-lvolumenair" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenair:beamvolumen" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenair:airvolumenmixture" from geometry to wall.WARNING: Changing thread-type for "origin-lvolumenmixture" from geometry to wall.WARNING: Changing thread-type for "origin-beamvolumen" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenair" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenmixture:beamvolumen" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenmixture" from geometry to wall.WARNING: Changing thread-type for "origin-lvolumenmixture:lvolumenout" from geometry to wall.WARNING: Changing thread-type for "origin-airvolumenmixture:lvolumenout" from geometry to wall.WARNING: Changing thread-type for "origin-lvolumenout" from geometry to wall.
+Partitioning mesh into 4 parts ... done.
+
+ ~~~~~~~~~~~~~~ Octree Surface Statistics ~~~~~~~~~~~~~~ 
+ Surface count: 12
+ No. of Points: 18
+ No. of Facets: 25
+ Span:                                                   
+         +457.00000    +74.00000   +375.00000
+ Extents:                                                
+  Min:     +0.00000    -37.00000    -81.00000
+  Max:   +457.00000    +37.00000   +294.00000
+  Mid:   +228.50000     +0.00000   +106.50000
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+Generating...
+   Surface Refinement for Feature Angles.
+   Surface Refinement for Refinement Regions.
+   Complete Tree.
+   Create Boundary Layers.
+   Refinement regions.
+   BOI refinement beginned.
+   2:1 balance refinement.
+   Uniform refinement for buffer layers.
+   Computing connected volumes.
+   Ghost layer.
+   Extract Cartesian mesh.
+   Assign bounding box face region IDs.
+   Create boundary mesh.
+Populate domain from octree.
+Post generate mesh.
+Cleanup octree.
+Octree finished.
+
+Note: Before modifying/re-creating rapid octree mesh,
+      please re-read boundary mesh.
+
+Note: Default quality method changed to 'orthogonal-quality'. 
+
+Mesh generation completed.
+
+----------------------------------------------------------------------------------------------------
+|                                   Rapid-Octree Mesh Statistics                                   |
+----------------------------------------------------------------------------------------------------
+| Mesh Generation Time: 0.88sec                                                                    |
+| Number of Cores: 4                                                                               |
+| Generated Number of Cell Zones: 1                                                                |
+| Generated Number of Boundary Face Zones: 3                                                       |
+| Generated Number of Cells: 640                                                                   |
+| Generated Number of Interior Faces: 1,752                                                        |
+| Generated Number of Boundary Faces: 336                                                          |
+| Maximum Boundary Face Warpage: 0.29                                                              |
+| Maximum Interior Face Warpage: 0.31                                                              |
+| Cell Quality Metric: Orthogonal Quality                                                          |
+| Minimum Cell Quality: 0.44                                                                       |
+| Number of Poor Quality Cells (< 1e-08): 0                                                        |
+| Cell Quality Distribution [0:0.1:1]: (0 0 0 0 25 28 38 85 89 375)                                |
+----------------------------------------------------------------------------------------------------
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 1)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 2)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 3)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 4)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 5)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 2)
+(cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton2(Cancel)")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-set-list-selections "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)" '( 0 1 2))
+(cx-gui-do cx-activate-item "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)")
+(cx-gui-do cx-set-list-selections "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)" '( 0 1 2 3))
+(cx-gui-do cx-activate-item "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)")
+(cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton1(OK)")
+(cx-use-window-id 51)
+selected 12 zone(s).
+zone id: 8, name: origin-beamvolumen, type: wall, count: 256
+zone id: 14, name: flow-volume-int-faces:14, type: interior, count: 1752
+zone id: 6, name: origin-airvolumenmixture:beamvolumen, type: wall, count: 51
+zone id: 8, name: origin-beamvolumen, type: wall, count: 256
+zone id: 14, name: flow-volume-int-faces:14, type: interior, count: 1752
+zone id: 6, name: origin-airvolumenmixture:beamvolumen, type: wall, count: 51
+zone id: 8, name: origin-beamvolumen, type: wall, count: 256
+zone id: 14, name: flow-volume-int-faces:14, type: interior, count: 1752
+zone id: 6, name: origin-airvolumenmixture:beamvolumen, type: wall, count: 51
+zone id: 8, name: origin-beamvolumen, type: wall, count: 256
+zone id: 14, name: flow-volume-int-faces:14, type: interior, count: 1752
+zone id: 6, name: origin-airvolumenmixture:beamvolumen, type: wall, count: 51
+(cx-use-window-id 51)
+zone not found.
+(cx-use-window-id 51)
+(handle-key "control [")
+/bo mo deselect-last
+
+> (cx-use-window-id 51)
+(handle-key "control [")
+/bo mo deselect-last
+
+> (cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton2(Cancel)")
+(cx-use-window-id 51)
+(cx-gui-do cx-activate-item "MenuBar*MeshMenu*Auto Mesh...")
+(cx-gui-do cx-activate-item "Auto Mesh*PanelButtons*PushButton3(Mesh)")
+
+Creating non-conformal interfaces...
+Error at Node 1: No prism-cap found.
+
+
+Error at Node 0: No prism-cap found.
+
+
+Error at Node 2: No prism-cap found.
+
+
+Error at Node 3: No prism-cap found.
+
+
+Error: Auto mesh failed.
+Error Object: #f
+(cx-gui-do cx-activate-item "Working*Cancel")
+
+Interrupting...
+Done.
+
+Meshing> (cx-gui-do cx-activate-item "Auto Mesh*PanelButtons*PushButton1(Close)")
+(cx-gui-do cx-activate-item "MenuBar*MeshMenu*Clear")
+(cx-gui-do cx-activate-item "Question*OK")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*fl_mesh_svg_graphics_toolbar")
+(cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-set-list-selections "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)" '())
+(cx-gui-do cx-activate-item "Display Grid*Frame1*Frame3(Faces)*Table1*Frame4*List1(Face Zones)")
+(cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton1(OK)")
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 1)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 0)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 3)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 4)
+(cx-gui-do cx-activate-tab-index "Display Grid*Frame1" 5)
+(cx-gui-do cx-activate-item "Display Grid*PanelButtons*PushButton2(Cancel)")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*frontfacestransparent")
+(cx-gui-do cx-activate-item "ToolBar*Mesh Display*frontfacestransparent")
+(cx-gui-do cx-activate-item "MenuBar*MeshMenu*Prisms...")
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 0)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 1)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 0)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 2)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 0)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 3)
+(cx-gui-do cx-activate-tab-index "Prisms*Frame12" 0)
+(cx-gui-do cx-activate-item "Prisms*PanelButtons*PushButton6(Apply)")
+(cx-gui-do cx-set-list-selections "Prisms*Frame1*List1(Boundary Zones)" '( 0 1 2))
+(cx-gui-do cx-activate-item "Prisms*Frame1*List1(Boundary Zones)")
+(cx-gui-do cx-activate-item "Prisms*PanelButtons*PushButton1(OK)")
+
+Analyzing adjacent zones for projection, retriangulation, connection:
+  origin-beamvolumen-27:ignore: will connect to quadrilateral faces.Abort(1688078) on node 2 (rank 2 in comm 0): Fatal error in PMPI_Recv: Message truncated, error stack:
+PMPI_Recv(171)..............: MPI_Recv(buf=000002140251DE58, count=112, MPI_BYTE, src=1, tag=1, comm=0x84000002, status=000000A5B67FDBB8) failed
+MPIDIG_handle_unexpected(50): Message from rank 1 and tag 1 truncated; 112 bytes received but buffer size is 116
+ Error in the fluent (tgrid) process : ended abnormally
+(cx-gui-do cx-activate-item "Question*OK")
+Auto-Transcript Stop Time:  18:32:50, 21 Sep 2025 Hora verano Sudamérica Pacífico 
+Total Transcript Time: 20 Minute 46 Second.

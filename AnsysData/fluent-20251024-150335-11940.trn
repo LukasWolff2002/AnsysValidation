@@ -1,0 +1,141 @@
+Auto-Transcript Start Time:  15:03:35, 24 Oct 2025 Hora verano Sudamérica Pacífico 
+Current Directory: "C:\Users\lkwol\OneDrive\Desktop\AnsysValidation\AnsysData"
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "Frodo" (win64).
+
+--------------------------------------------------------------------------------------
+ID    Hostname  Core  O.S.         PID    Vendor                                     
+--------------------------------------------------------------------------------------
+n3    Frodo     4/16  Windows-x64  7700   AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n2    Frodo     3/16  Windows-x64  21596  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n1    Frodo     2/16  Windows-x64  13356  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n0*   Frodo     1/16  Windows-x64  14212  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+host  Frodo           Windows-x64  21560  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+
+MPI Option Selected: intel
+Selected system interconnect: default
+--------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\lkwol\\OneDrive\\Desktop\\AnsysValidation\\AnsysData\\cleanup-fluent-Frodo-21560.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+Fast-loading "C:\PROGRA~1\ANSYSI~1\ANSYSS~1\v252\fluent\fluent25.2.0\\addons\afd\lib\hdfio.bin"
+Done.
+Multicore SMT processors detected. Processor affinity set!
+
+Reading from Frodo:"C:/Users/lkwol/OneDrive/Desktop/AnsysValidation/AnsysData/carbopol_fluent.cas.h5" in NODE0 mode ...
+  Reading mesh ...
+       26116 cells,     3 cell zones ...
+          11600 mixed cells,  zone id: 8
+           3927 mixed cells,  zone id: 9
+          10589 mixed cells,  zone id: 10
+       82087 faces,     9 face zones ...
+            770 quadrilateral interior faces,  zone id: 1
+             48 quadrilateral interior faces,  zone id: 2
+          32797 mixed interior faces,  zone id: 3
+          10553 mixed interior faces,  zone id: 4
+          29999 mixed interior faces,  zone id: 5
+           1383 mixed pressure-outlet faces,  zone id: 11
+           2666 mixed wall faces,  zone id: 12
+           3667 mixed wall faces,  zone id: 13
+            204 quadrilateral pressure-inlet faces,  zone id: 14
+       29993 nodes,     1 node zone  ...
+  Done.
+
+
+Building...
+     mesh
+	distributing mesh
+		parts....,
+		faces....,
+		nodes....,
+		cells....,
+        bandwidth reduction using Reverse Cuthill-McKee: 6472/224 = 28.8929
+     materials,
+     interface,
+     domains,
+	mixture
+	phase-air
+	phase-carbopol
+	interaction
+     zones,
+	interior-lvolumen  (phase-carbopol)
+	interior-lvolumen  (phase-air)
+	interior-airvolumen  (phase-carbopol)
+	interior-airvolumen  (phase-air)
+	interior-beamvolumen  (phase-carbopol)
+	interior-beamvolumen  (phase-air)
+	airoutlet  (phase-carbopol)
+	airoutlet  (phase-air)
+	beamwall  (phase-carbopol)
+	beamwall  (phase-air)
+	lwall  (phase-carbopol)
+	lwall  (phase-air)
+	airinlet  (phase-air)
+	airinlet  (phase-carbopol)
+	airvolumen  (phase-air)
+	airvolumen  (phase-carbopol)
+	beamvolumen  (phase-air)
+	beamvolumen  (phase-carbopol)
+	lvolumen  (phase-air)
+	lvolumen  (phase-carbopol)
+	interior-airvolumen-lvolumen  (phase-air)
+	interior-airvolumen-lvolumen  (phase-carbopol)
+	interior-airvolumen-beamvolumen  (phase-air)
+	interior-airvolumen-beamvolumen  (phase-carbopol)
+	lwall
+	beamwall
+	airoutlet
+	interior-beamvolumen
+	interior-airvolumen
+	interior-lvolumen
+	airinlet
+	interior-airvolumen-lvolumen
+	interior-airvolumen-beamvolumen
+	airvolumen
+	beamvolumen
+	lvolumen
+     parallel,
+Done.
+
+> (cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Initialize")
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Automatic Mesh Adaption"))
+(cx-gui-do cx-set-list-tree-selections "NavigationPane*Frame2*Table1*List_Tree2" (list "Solution|Initialization"))
+(cx-gui-do cx-list-tree-right-click "NavigationPane*Frame2*Table1*List_Tree2" )
+(cx-gui-do cx-activate-item "MenuBar*PopupMenuTree-Initialization*Patch...")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)" '( 2))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*DropDownList1(Phase)")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)" '( 3))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame1*Frame1*Table2*List2(Variable)")
+(cx-gui-do cx-set-list-selections "Patch*Table1*Frame3*List3(Registers to Patch)" '( 0))
+(cx-gui-do cx-activate-item "Patch*Table1*Frame3*List3(Registers to Patch)")
+(cx-gui-do cx-activate-item "Patch*PanelButtons*PushButton1(Close)")
+/exit y
+(cx-gui-do cx-activate-item "Question*OK")
+
+Posting ANSYS Product Improvement Program performance data 
+Done.
+Auto-Transcript Stop Time:  15:08:14, 24 Oct 2025 Hora verano Sudamérica Pacífico 
+Total Transcript Time: 4 Minute 38 Second.
