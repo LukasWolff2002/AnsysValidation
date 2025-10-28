@@ -90,29 +90,31 @@ df_first["z"] = (H - df_first["y_px"]) * scale_m_per_px + offset_z
 df_first["y"] = np.random.uniform(-0.02, 0.02, size=len(df_first))  # aleatorio en [-0.02, 0.02] m
 
 # ----------------- Vector normal (perpendicular a la fibra) en XZ -----------------
+# Ángulo PTV: respecto a +x (grados). Mapeo a Rocky:
+#   dirección fibra u = (cosθ, 0, -sinθ)
+#   normal en XZ       n = (sinθ, 0,  cosθ)  (unitaria)
 theta = np.deg2rad(df_first["ang_deg"].values)
 df_first["nx"] = np.sin(theta)
 df_first["ny"] = 0.0
 df_first["nz"] = np.cos(theta)
 
 # ----------------- IDs y ángulo constante -----------------
+# ptv_id: el track_id original del PTV
 df_first["ptv_id"] = df_first["track_id"].astype(int)
+
+# rocky_id: consecutivo 1..N (estable al ordenar por ptv_id)
 df_first = df_first.sort_values(["ptv_id"]).reset_index(drop=True)
 df_first["rocky_id"] = np.arange(1, len(df_first) + 1, dtype=int)
-df_first["angle"] = np.pi / 2  # radianes
 
-# ----------------- Filtro: eliminar fibras con X_m < 0 o Z_m < 0 -----------------
-before = len(df_first)
-df_first = df_first[(df_first["x"] >= 0) & (df_first["z"] >= 0)].copy()
-after = len(df_first)
-removed = before - after
+# angle: constante pi/2
+df_first["angle"] = np.pi / 2  # radianes
 
 # ----------------- Guardar CSV final -----------------
 cols_out = ["rocky_id", "ptv_id", "x", "y", "z", "nx", "ny", "nz", "angle"]
 Path(out_csv_rocky).parent.mkdir(parents=True, exist_ok=True)
 df_first.to_csv(out_csv_rocky, index=False, columns=cols_out)
 
-print(f"[OK] Exportados {after} puntos (eliminados {removed} con coordenadas negativas).")
+print(f"[OK] Exportados {len(df_first)} puntos al CSV con IDs y ángulo constante π/2.")
 print(f"[INFO] Ref PTV: ({ref_x_px:.2f}px, {ref_y_px:.2f}px) → Rocky ({x_conocido_rocky:.3f}, {z_conocido_rocky:.3f}) m")
 print(f"[INFO] Offsets: offset_x={offset_x:.6f} m, offset_z={offset_z:.6f} m")
 print(f"[SAVE] {out_csv_rocky}")
