@@ -1,0 +1,48 @@
+Auto-Transcript Start Time:  09:14:14, 27 Oct 2025 Hora verano Sudamérica Pacífico 
+Current Directory: "C:\Users\lkwol\OneDrive\Desktop\AnsysValidation\AnsysData"
+
+              Welcome to ANSYS Fluent 2025 R2
+
+              Copyright 1987-2025 ANSYS, Inc. All Rights Reserved.
+              Unauthorized use, distribution or duplication is prohibited.
+              This product is subject to U.S. laws governing export and re-export.
+              For full Legal Notice, see documentation.
+
+Build Time: Jun 16 2025 10:42:46 EDT  Build Id: 10204  
+ 
+Connected License Server List:	<Shared_Web_License_Server>
+
+     --------------------------------------------------------------
+     This is a student version of ANSYS FLUENT. Usage of this product
+     license is limited to the terms and conditions specified in your ANSYS
+     license form, additional terms section.
+     --------------------------------------------------------------
+Host spawning Node 0 on machine "Frodo" (win64).
+
+--------------------------------------------------------------------------------------
+ID    Hostname  Core  O.S.         PID    Vendor                                     
+--------------------------------------------------------------------------------------
+n3    Frodo     4/16  Windows-x64  8440   AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n2    Frodo     3/16  Windows-x64  17692  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n1    Frodo     2/16  Windows-x64  25708  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+n0*   Frodo     1/16  Windows-x64  28728  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+host  Frodo           Windows-x64  29292  AMD Ryzen 7 7840HS w/ Radeon 780M Graphics 
+
+MPI Option Selected: intel
+Selected system interconnect: default
+--------------------------------------------------------------------------------------
+
+Cleanup script file is C:\\Users\\lkwol\\OneDrive\\Desktop\\AnsysValidation\\AnsysData\\cleanup-fluent-Frodo-29292.bat
+
+Graphics driver currently in use: dx11
+
+
+Posting ANSYS Product Improvement Program startup data
+Done.
+
+> /exit y
+
+Posting ANSYS Product Improvement Program performance data 
+Done.
+Auto-Transcript Stop Time:  09:14:51, 27 Oct 2025 Hora verano Sudamérica Pacífico 
+Total Transcript Time: 0 Minute 36 Second.
