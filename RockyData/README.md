@@ -16,9 +16,8 @@
 4. Guardar `case` y `data` para lectura en Rocky.
 
 ### Referencias
-- Documentación: Rocky User Manual — página 377  
-    https://www.dropbox.com/scl/fi/1tvuvt173gr4jefrwjkz2/Rocky_User_Manual.pdf?rlkey=1l93u2zngbijjl3y8u5opwdmy&st=ws5230c7&dl=0
-- Tutorial: https://www.dropbox.com/scl/fo/k5c61kz377pt2ss2p1kcs/AA_pAlmcO8AmNjBTMJeA-y4?rlkey=xajb7r7svjn0lzc9tzelbli0v&st=zlsbw67d&dl=0
+- Documentación: [Rocky User Manual — página 377](https://www.dropbox.com/scl/fi/1tvuvt173gr4jefrwjkz2/Rocky_User_Manual.pdf?rlkey=1l93u2zngbijjl3y8u5opwdmy&st=ws5230c7&dl=0)
+- Tutorial: [Tutorial (Dropbox)](https://www.dropbox.com/scl/fo/k5c61kz377pt2ss2p1kcs/AA_pAlmcO8AmNjBTMJeA-y4?rlkey=xajb7r7svjn0lzc9tzelbli0v&st=zlsbw67d&dl=0)
 
 ## Apuntes — Rocky
 - Relación de aspecto (aspect ratio): `81.25`.
