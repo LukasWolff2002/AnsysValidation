@@ -200,7 +200,7 @@ def analyze_three_meshes_txt(
             {f"{metric} fine(S{size_f})": phi_f, f"{metric} med(S{size_m})": phi_m,
              f"{metric} coarse(S{size_c})": phi_c, "extrap.": phi_ext},
             title=f"{base_mesh} – x={xval:.2f} – {metric}(z)  p≈{p_eff:.2f}",
-            xlabel=f"{metric} [SI]", outfile=outdir / f"profiles_{metric}.png"
+            xlabel=f"{metric} [m/s]", outfile=outdir / f"profiles_{metric}.png"
         )
         plot_profile(
             zc,
