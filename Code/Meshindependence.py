@@ -18,7 +18,7 @@ H_TRIPLET = (0.003, 0.004, 0.005)  # h_f, h_m, h_c (ajusta a tus mallas)
 
 PREFIX_FMT = "{mesh}{size}-"  # ej. "HexSweep3-0001"
 
-COMPONENTS = ("u",)           # ("u","v") si también quieres v = uz
+COMPONENTS = ("u", "v")           # ("u","v") si también quieres v = uz
 
 # Grid común para análisis espacial (baja NX,NZ si quieres menos puntos)
 NX, NZ = 80, 80
@@ -271,25 +271,24 @@ def main():
             indep_Lee_31 = (cv_rmse_31 <= LEE_CV_THRESHOLD) and (r2_31 >= LEE_R2_THRESHOLD)
 
             # 5) Perfiles U(x) y U(z) para U (si comp=="u")
-            if comp == "u":
-                Ux_f_x, Ux_f_z = compute_profiles_ux(F_f)
-                Ux_m_x, Ux_m_z = compute_profiles_ux(F_m)
-                Ux_c_x, Ux_c_z = compute_profiles_ux(F_c)
+            Ux_f_x, Ux_f_z = compute_profiles_ux(F_f)
+            Ux_m_x, Ux_m_z = compute_profiles_ux(F_m)
+            Ux_c_x, Ux_c_z = compute_profiles_ux(F_c)
 
-                df_x = pd.DataFrame({
-                    "x": xc,
-                    f"{comp}_fine":   Ux_f_x,
-                    f"{comp}_medium": Ux_m_x,
-                    f"{comp}_coarse": Ux_c_x,
-                })
-                df_z = pd.DataFrame({
-                    "z": zc,
-                    f"{comp}_fine":   Ux_f_z,
-                    f"{comp}_medium": Ux_m_z,
-                    f"{comp}_coarse": Ux_c_z,
-                })
-                df_x.to_csv(OUT / f"group{g:02d}_{comp}_profile_x.csv", index=False)
-                df_z.to_csv(OUT / f"group{g:02d}_{comp}_profile_z.csv", index=False)
+            df_x = pd.DataFrame({
+                "x": xc,
+                f"{comp}_fine":   Ux_f_x,
+                f"{comp}_medium": Ux_m_x,
+                f"{comp}_coarse": Ux_c_x,
+            })
+            df_z = pd.DataFrame({
+                "z": zc,
+                f"{comp}_fine":   Ux_f_z,
+                f"{comp}_medium": Ux_m_z,
+                f"{comp}_coarse": Ux_c_z,
+            })
+            df_x.to_csv(OUT / f"group{g:02d}_{comp}_profile_x.csv", index=False)
+            df_z.to_csv(OUT / f"group{g:02d}_{comp}_profile_z.csv", index=False)
 
             # 6) Guardar métricas por grupo (entre mallas)
             all_metrics.append({
