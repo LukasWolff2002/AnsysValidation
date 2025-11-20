@@ -9,6 +9,14 @@ import matplotlib.pyplot as plt
 # CONFIGURACIÓN EDITABLE
 # =========================
 
+"""
+HAY QUE ARREGLARLO PARA QUE LEA TODO TIPO DE MALLAS Y NO SOLO HexSweep,
+TAMBIÉN, QUE DISTINGA LOS DISTINTOS TAMAÑOS DE MALLA (Size3,4,5) Y QUE 
+GRACIAS A ESE NUMERO DEFINA EL TAMAÑO DE H.
+"""
+
+
+
 BASE = Path("CFD_Solution")   # raíz de tus resultados Fluent
 MESH_NAME = "HexSweep"        # CFD_Solution/<MESH_NAME>/SizeN/...
 SUBDIR = "CarbopolSolution"   # subcarpeta de los ASCII de Fluent
