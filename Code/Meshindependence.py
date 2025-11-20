@@ -1,261 +1,362 @@
 # -*- coding: utf-8 -*-
-
+import re
+from pathlib import Path
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from pathlib import Path
 
-# ============================
-# Lectura de tus .txt (CFDtransformer)
-# ============================
+# =========================
+# CONFIGURACIÓN EDITABLE
+# =========================
 
-def load_blocks_from_txt(path: Path):
-    """Devuelve lista de DataFrames (x,z,u,v) ordenados por z. Bloques separados por línea en blanco."""
-    blocks = []
-    with open(path, "r", encoding="utf-8") as f:
-        lines = [ln.strip() for ln in f.readlines()]
-    if lines and lines[0].lower().startswith("x[m]"):  # quita encabezado
-        lines = lines[1:]
-    curr = []
-    for ln in lines + [""]:
-        if ln == "":
-            if curr:
-                data = []
-                for row in curr:
-                    parts = [p.strip() for p in row.split(",")]
-                    if len(parts) < 4: continue
-                    try:
-                        x = float(parts[0]); z = float(parts[1])
-                        u = float(parts[2]); v = float(parts[3])
-                        data.append((x, z, u, v))
-                    except ValueError:
-                        pass
-                if data:
-                    df = pd.DataFrame(data, columns=["x","z","u","v"]).sort_values("z").reset_index(drop=True)
-                    blocks.append(df)
-            curr = []
+BASE = Path("CFD_Solution")   # raíz de tus resultados Fluent
+MESH_NAME = "HexSweep"        # CFD_Solution/<MESH_NAME>/SizeN/...
+SUBDIR = "CarbopolSolution"   # subcarpeta de los ASCII de Fluent
+
+SIZES = (3, 4, 5)             # (fine, medium, coarse) -> Size3,4,5
+H_TRIPLET = (0.003, 0.004, 0.005)  # h_f, h_m, h_c (ajusta a tus mallas)
+
+PREFIX_FMT = "{mesh}{size}-"  # ej. "HexSweep3-0001"
+
+COMPONENTS = ("u",)           # ("u","v") si también quieres v = uz
+
+# Grid común para análisis espacial (baja NX,NZ si quieres menos puntos)
+NX, NZ = 80, 80
+
+# Agrupación temporal
+FILES_PER_GROUP = 50         # archivos por tanda
+MAX_GROUPS      = None        # None -> usa todas las tandas posibles
+
+SCHEME_ORDER_P = 2            # orden esquema numérico (para GCI-like)
+
+# Criterios (Wang & Zhai + Lee)
+WZ_THRESHOLD      = 0.10      # 10% en RMSE_norm
+LEE_CV_THRESHOLD  = 0.10      # 10% en CV(RMSE)
+LEE_R2_THRESHOLD  = 0.95      # mínimo R²
+
+OUT = Path("out_groups_fullfield")
+OUT.mkdir(parents=True, exist_ok=True)
+
+# =========================
+# MAPEOS DE COLUMNAS (Fluent)
+# =========================
+
+CANON = {
+    "nodenumber": "id",
+    "x-coordinate": "x",
+    "y-coordinate": "y",
+    "z-coordinate": "z",
+    "phase-carbopol-x-velocity": "ux",
+    "phase-carbopol-y-velocity": "uy",
+    "phase-carbopol-z-velocity": "uz",
+}
+
+def standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
+    cols = [c.strip().lower() for c in df.columns]
+    new = []
+    for c in cols:
+        if c in CANON:
+            new.append(CANON[c])
         else:
-            curr.append(ln)
-    return blocks
+            new.append(c.replace(" ", "_"))
+    df.columns = new
+    need = {"x", "z", "ux", "uz"}
+    miss = need.difference(df.columns)
+    if miss:
+        raise ValueError(f"Faltan columnas requeridas en archivo Fluent: {miss}")
+    return df
 
-def pick_profile(blocks, mode="mean_last_n", last_n=5):
-    """Devuelve un DataFrame (x,z,u,v) representativo: último bloque o promedio de los últimos N (interpolado)."""
-    if not blocks:
-        raise ValueError("TXT sin bloques.")
-    if mode == "last" or len(blocks) == 1:
-        return blocks[-1]
-    use = blocks[-last_n:] if len(blocks) >= last_n else blocks
-    zmin = max(b["z"].min() for b in use)
-    zmax = min(b["z"].max() for b in use)
-    zc = np.linspace(zmin, zmax, 600)
-    U = [np.interp(zc, b["z"].values, b["u"].values) for b in use]
-    V = [np.interp(zc, b["z"].values, b["v"].values) for b in use]
-    u_mean = np.nanmean(np.vstack(U), axis=0)
-    v_mean = np.nanmean(np.vstack(V), axis=0)
-    return pd.DataFrame({"x": np.nan, "z": zc, "u": u_mean, "v": v_mean})
+# =========================
+# UTILIDADES DE LECTURA / AGRUPACIÓN
+# =========================
 
-def align_to_common_z(dfs, npts=600):
-    """Intersección de rangos + interpolación a z común; devuelve zc, U_list, V_list."""
-    zmin = max(df["z"].min() for df in dfs)
-    zmax = min(df["z"].max() for df in dfs)
-    zc = np.linspace(zmin, zmax, npts)
-    U = [np.interp(zc, df["z"].values, df["u"].values) for df in dfs]
-    V = [np.interp(zc, df["z"].values, df["v"].values) for df in dfs]
-    return zc, U, V
+def list_step_files(dir_path: Path, prefix: str):
+    cands = [p for p in dir_path.iterdir() if p.is_file() and p.name.startswith(prefix)]
+    if not cands:
+        raise FileNotFoundError(f"No hay archivos con prefijo '{prefix}' en {dir_path}")
+    def _num(p: Path):
+        m = re.fullmatch(rf"{re.escape(prefix)}(\d+)", p.name)
+        return int(m.group(1)) if m else 10**12
+    cands.sort(key=_num)
+    return cands
 
-# ============================
-# Métricas: p (Richardson), GCI, RMSE (Wang & Zhai), NRMSE (vs experimento)
-# ============================
-
-def richardson_p_phi(phi_f, phi_m, phi_c, r):
-    """p local y phi extrapolada (Richardson)."""
-    phi_f = np.asarray(phi_f); phi_m = np.asarray(phi_m); phi_c = np.asarray(phi_c)
-    with np.errstate(divide='ignore', invalid='ignore'):
-        p_local = np.log(np.abs((phi_c - phi_m) / (phi_m - phi_f) + 1e-30)) / np.log(r + 1e-30)
-    denom = np.power(r, p_local) - 1.0
-    denom[np.abs(denom) < 1e-12] = np.nan
-    phi_ext = phi_f + (phi_f - phi_m) / denom
-    return p_local, phi_ext
-
-def gci_pair(phi_coarse, phi_fine, r, p_eff, Fs=1.25):
-    """GCI de Roache entre par coarse/fine con p efectivo escalar."""
-    phi_c = np.asarray(phi_coarse); phi_f = np.asarray(phi_fine)
-    with np.errstate(divide='ignore', invalid='ignore'):
-        eps = np.abs((phi_c - phi_f) / (phi_f + 1e-30))
-        return Fs * eps / (np.power(r, p_eff) - 1.0)
-
-def rmse_normalized(phi1, phi2):
+def grouped_means(mesh_size: int, files_per_group: int, max_groups=None):
     """
-    RMSE normalizado (Wang & Zhai):
-    ||phi1 - phi2||_2 / ||phi2||_2    ← índice práctico de diferencia global entre mallas adyacentes.
+    Devuelve lista [df_group0, df_group1, ...] para una malla (SizeN),
+    cada df es promedio temporal de files_per_group archivos.
     """
-    num = np.sqrt(np.nansum((np.asarray(phi1) - np.asarray(phi2))**2))
-    den = np.sqrt(np.nansum((np.asarray(phi2))**2)) + 1e-30
+    folder = BASE / MESH_NAME / f"Size{mesh_size}" / SUBDIR
+    prefix = PREFIX_FMT.format(mesh=MESH_NAME, size=mesh_size)
+    files = list_step_files(folder, prefix)
+
+    if files_per_group <= 0:
+        raise ValueError("files_per_group debe ser > 0")
+
+    groups = []
+    n_files = len(files)
+    n_groups_possible = n_files // files_per_group
+    if n_groups_possible == 0:
+        raise RuntimeError(f"No alcanza ni para una tanda: hay {n_files} archivos, "
+                           f"files_per_group={files_per_group}")
+
+    if max_groups is None:
+        n_groups = n_groups_possible
+    else:
+        n_groups = min(n_groups_possible, max_groups)
+
+    for g in range(n_groups):
+        start = g * files_per_group
+        end   = start + files_per_group
+        batch = files[start:end]
+        chunks = []
+        for fp in batch:
+            df = pd.read_csv(fp, header=0, skipinitialspace=True)
+            df = standardize_columns(df)
+            chunks.append(df[["x", "z", "ux", "uz"]].dropna())
+        big = pd.concat(chunks, axis=0, ignore_index=True)
+        grouped = big.groupby(["x", "z"], as_index=False).mean()
+        groups.append(grouped)
+
+    return groups
+
+# =========================
+# GRID COMÚN y BINNING
+# =========================
+
+def common_grid(ext1, ext2, ext3, nx, nz):
+    x_min = max(ext1[0], ext2[0], ext3[0])
+    x_max = min(ext1[1], ext2[1], ext3[1])
+    z_min = max(ext1[2], ext2[2], ext3[2])
+    z_max = min(ext1[3], ext2[3], ext3[3])
+    if not (x_min < x_max and z_min < z_max):
+        raise RuntimeError("Los dominios no se intersectan en X,Z.")
+    xg = np.linspace(x_min, x_max, nx)
+    zg = np.linspace(z_min, z_max, nz)
+    return xg, zg
+
+def bin_to_grid(df: pd.DataFrame, xg: np.ndarray, zg: np.ndarray, comp: str):
+    xi = np.clip(np.searchsorted(xg, df["x"].values) - 1, 0, len(xg)-2)
+    zi = np.clip(np.searchsorted(zg, df["z"].values) - 1, 0, len(zg)-2)
+    val = df["ux"].values if comp == "u" else df["uz"].values
+
+    acc = np.zeros((len(zg)-1, len(xg)-1), dtype=float)
+    cnt = np.zeros_like(acc)
+    for k in range(val.size):
+        acc[zi[k], xi[k]] += val[k]
+        cnt[zi[k], xi[k]] += 1.0
+    with np.errstate(invalid='ignore'):
+        fld = acc / cnt
+    msk = cnt > 0
+    return fld, msk
+
+# =========================
+# MÉTRICAS (W&Z, Lee, GCI-like)
+# =========================
+
+def rmse_norm_field(A, B, M=None):
+    if M is None:
+        M = np.isfinite(A) & np.isfinite(B)
+    if not np.any(M):
+        return np.nan
+    num = np.sqrt(np.nansum(((A - B)[M])**2))
+    den = np.sqrt(np.nansum((B[M])**2)) + 1e-30
     return num / den
 
-def rmse_gci_like(phi1, phi2, r, p_scheme):
+def cv_rmse_field(A, B, M=None):
+    if M is None:
+        M = np.isfinite(A) & np.isfinite(B)
+    if not np.any(M):
+        return np.nan
+    err = (A - B)[M]
+    rmse = np.sqrt(np.nanmean(err**2))
+    mean_abs_B = np.nanmean(np.abs(B[M])) + 1e-30
+    return rmse / mean_abs_B
+
+def r2_field(A, B, M=None):
+    if M is None:
+        M = np.isfinite(A) & np.isfinite(B)
+    if not np.any(M):
+        return np.nan
+    y = B[M].ravel()
+    y_hat = A[M].ravel()
+    y_mean = np.nanmean(y)
+    ss_tot = np.nansum((y - y_mean)**2)
+    ss_res = np.nansum((y - y_hat)**2)
+    if ss_tot <= 0:
+        return np.nan
+    return 1.0 - ss_res / (ss_tot + 1e-30)
+
+def gci_like_from_rmse(rmse_norm, r, p):
+    return rmse_norm / (np.power(r, p) - 1.0 + 1e-30)
+
+# =========================
+# PROFILES U(x) y U(z)
+# =========================
+
+def compute_profiles_ux(F):
     """
-    Variante 'GCI-like' basada en W&Z:  RMSE_norm / (r^p - 1)
-    Útil si quieres reportar el índice con el factor del orden del esquema numérico (p) y la razón r.
+    F: campo (NZ-1 x NX-1) de u (ux) ya en el grid común.
+    Devuelve Ux_vs_x (promedio en z) y Ux_vs_z (promedio en x).
     """
-    return rmse_normalized(phi1, phi2) / (np.power(r, p_scheme) - 1.0 + 1e-30)
+    Ux_vs_x = np.nanmean(F, axis=0)  # promedio en z -> función de x
+    Ux_vs_z = np.nanmean(F, axis=1)  # promedio en x -> función de z
+    return Ux_vs_x, Ux_vs_z
 
-def nrmse_vs_exp(y_true, y_pred):
-    """NRMSE respecto a experimento: RMSE / (max- min) de la serie experimental interpolada."""
-    t = np.asarray(y_true); p = np.asarray(y_pred)
-    m = np.isfinite(t) & np.isfinite(p)
-    if not np.any(m): return np.nan
-    rng = np.nanmax(t[m]) - np.nanmin(t[m])
-    if rng <= 0: return np.nan
-    return np.sqrt(np.nanmean((p[m] - t[m])**2)) / (rng + 1e-30)
+# =========================
+# MAIN
+# =========================
 
-# ============================
-# Plot
-# ============================
+def main():
+    # 1) campos agrupados por malla
+    groups_f = grouped_means(SIZES[0], FILES_PER_GROUP, MAX_GROUPS)
+    groups_m = grouped_means(SIZES[1], FILES_PER_GROUP, MAX_GROUPS)
+    groups_c = grouped_means(SIZES[2], FILES_PER_GROUP, MAX_GROUPS)
 
-def plot_profile(z, curves, title, xlabel, outfile):
-    plt.figure()
-    for lab, arr in curves.items():
-        plt.plot(arr, z, label=lab)
-    plt.gca().invert_yaxis()
-    plt.xlabel(xlabel); plt.ylabel("z [m]")
-    plt.title(title); plt.grid(True, alpha=0.3); plt.legend()
-    plt.tight_layout(); plt.savefig(outfile, dpi=170); plt.close()
+    n_groups = min(len(groups_f), len(groups_m), len(groups_c))
+    print(f"Usando {n_groups} grupos (tandas)")
 
-# ============================
-# Pipeline principal (SIN CLASES)
-# ============================
+    # 2) Extentos globales (grupo 0)
+    g0_f, g0_m, g0_c = groups_f[0], groups_m[0], groups_c[0]
+    ext_f = (g0_f["x"].min(), g0_f["x"].max(), g0_f["z"].min(), g0_f["z"].max())
+    ext_m = (g0_m["x"].min(), g0_m["x"].max(), g0_m["z"].min(), g0_m["z"].max())
+    ext_c = (g0_c["x"].min(), g0_c["x"].max(), g0_c["z"].min(), g0_c["z"].max())
 
-def analyze_three_meshes_txt(
-    base_mesh,               # p.ej. 'HexSweep' (carpeta en CFD_Profiles/<base_mesh>/SizeN/)
-    size_triplet,            # (fine, med, coarse) ej. (1,2,3)
-    h_triplet,               # (h_f, h_m, h_c) tamaños característicos (misma métrica)
-    x_targets,               # lista de x (deben coincidir con 'perfiles_x={x:.2f}.txt')
-    metric="u",              # 'u' o 'v'
-    scheme_order_p=2,        # orden del esquema (1=Upwind, 2=CDS/Hybrid~CDS, 3=QUICK); para rmse_gci_like
-    smooth_last_n=5,         # promedio de últimos N bloques
-    out_root=Path("out_WZ"),
-    exp_paths=None,          # dict opcional {x: Path(CSV/TXT experimento)}; CSV con cols z,phi o TXT como CFD
-    independence_threshold=0.10  # 10% según W&Z
-):
-    out_root.mkdir(parents=True, exist_ok=True)
-    size_f, size_m, size_c = size_triplet
-    h_f, h_m, h_c = h_triplet
-    r12, r23 = h_m / h_f, h_c / h_m
-    print(f"[INFO] r12={r12:.3f}, r23={r23:.3f}, esquema p={scheme_order_p}")
+    xg, zg = common_grid(ext_f, ext_m, ext_c, NX, NZ)
+    xc = 0.5*(xg[:-1] + xg[1:])
+    zc = 0.5*(zg[:-1] + zg[1:])
 
-    for xval in x_targets:
-        # Archivos TXT exactos como los genera tu transformador
-        txt_f = Path(f"CFD_Profiles/{base_mesh}/Size{size_f}/perfiles_x={xval:.2f}.txt")
-        txt_m = Path(f"CFD_Profiles/{base_mesh}/Size{size_m}/perfiles_x={xval:.2f}.txt")
-        txt_c = Path(f"CFD_Profiles/{base_mesh}/Size{size_c}/perfiles_x={xval:.2f}.txt")
-        for pth in (txt_f, txt_m, txt_c):
-            if not pth.exists():
-                raise FileNotFoundError(f"No existe: {pth}")
+    r12 = H_TRIPLET[1] / H_TRIPLET[0]
+    r23 = H_TRIPLET[2] / H_TRIPLET[1]
 
-        # 1) Cargar y elegir perfil representativo
-        prof_f = pick_profile(load_blocks_from_txt(txt_f), mode="mean_last_n", last_n=smooth_last_n)
-        prof_m = pick_profile(load_blocks_from_txt(txt_m), mode="mean_last_n", last_n=smooth_last_n)
-        prof_c = pick_profile(load_blocks_from_txt(txt_c), mode="mean_last_n", last_n=smooth_last_n)
+    all_metrics = []
+    # para residual sintético: guardamos campos por grupo/malla/componente
+    fields_f = {comp: [] for comp in COMPONENTS}
+    fields_m = {comp: [] for comp in COMPONENTS}
+    fields_c = {comp: [] for comp in COMPONENTS}
 
-        # 2) Interpolar a z común
-        zc, U_list, V_list = align_to_common_z([prof_f, prof_m, prof_c], npts=600)
-        PHI = U_list if metric == "u" else V_list
-        phi_f, phi_m, phi_c = PHI[0], PHI[1], PHI[2]
+    for g in range(n_groups):
+        df_f = groups_f[g]
+        df_m = groups_m[g]
+        df_c = groups_c[g]
 
-        # 3) Richardson + GCI
-        p_local, phi_ext = richardson_p_phi(phi_f, phi_m, phi_c, r12)
-        p_eff = np.nanmedian(p_local)
-        GCI_21 = gci_pair(phi_m, phi_f, r12, p_eff)
-        GCI_32 = gci_pair(phi_c, phi_m, r23, p_eff)
+        for comp in COMPONENTS:
+            # 3) campos en grid común
+            F_f, M_f = bin_to_grid(df_f, xg, zg, comp)
+            F_m, M_m = bin_to_grid(df_m, xg, zg, comp)
+            F_c, M_c = bin_to_grid(df_c, xg, zg, comp)
 
-        # 4) RMSE normalizado (W&Z) y variante GCI-like
-        RMSE_norm_21 = rmse_normalized(phi_m, phi_f)
-        RMSE_norm_32 = rmse_normalized(phi_c, phi_m)
-        RMSE_gci_like_21 = rmse_gci_like(phi_m, phi_f, r12, scheme_order_p)
-        RMSE_gci_like_32 = rmse_gci_like(phi_c, phi_m, r23, scheme_order_p)
+            fields_f[comp].append((F_f, M_f))
+            fields_m[comp].append((F_m, M_m))
+            fields_c[comp].append((F_c, M_c))
 
-        # 5) (Opcional) experimento -> NRMSE
-        phi_exp_interp = None
-        nrmse_f = nrmse_m = nrmse_c = np.nan
-        if exp_paths and xval in exp_paths and Path(exp_paths[xval]).exists():
-            epath = Path(exp_paths[xval])
-            if epath.suffix.lower() == ".csv":
-                edf = pd.read_csv(epath).dropna().sort_values("z")
-                phi_exp_interp = np.interp(zc, edf["z"].values, edf["phi"].values)
-            else:  # TXT con mismo formato
-                exp_prof = pick_profile(load_blocks_from_txt(epath), mode="mean_last_n", last_n=smooth_last_n)
-                raw = exp_prof[metric].values
-                phi_exp_interp = np.interp(zc, exp_prof["z"].values, raw)
-            nrmse_f = nrmse_vs_exp(phi_exp_interp, phi_f)
-            nrmse_m = nrmse_vs_exp(phi_exp_interp, phi_m)
-            nrmse_c = nrmse_vs_exp(phi_exp_interp, phi_c)
+            # máscaras vs malla fina (para comparar mallas)
+            M21 = M_f & M_m
+            M31 = M_f & M_c
 
-        # 6) Salidas (gráficos + CSV)
-        outdir = out_root / f"{base_mesh}_x{str(xval).replace('.','p')}_{metric}"
-        outdir.mkdir(parents=True, exist_ok=True)
+            # 4) Métricas WZ + Lee
+            rmse_norm_21 = rmse_norm_field(F_m, F_f, M21)
+            rmse_norm_31 = rmse_norm_field(F_c, F_f, M31)
+            gci_like_21 = gci_like_from_rmse(rmse_norm_21, r12, SCHEME_ORDER_P)
+            gci_like_31 = gci_like_from_rmse(rmse_norm_31, r23, SCHEME_ORDER_P)
 
-        plot_profile(
-            zc,
-            {f"{metric} fine(S{size_f})": phi_f, f"{metric} med(S{size_m})": phi_m,
-             f"{metric} coarse(S{size_c})": phi_c, "extrap.": phi_ext},
-            title=f"{base_mesh} – x={xval:.2f} – {metric}(z)  p≈{p_eff:.2f}",
-            xlabel=f"{metric} [m/s]", outfile=outdir / f"profiles_{metric}.png"
-        )
-        plot_profile(
-            zc,
-            {"GCI med/fine": GCI_21, "GCI coarse/med": GCI_32},
-            title=f"{base_mesh} – x={xval:.2f} – GCI (p≈{p_eff:.2f})",
-            xlabel="GCI [-]", outfile=outdir / "gci.png"
-        )
+            indep_WZ_21 = rmse_norm_21 <= WZ_THRESHOLD
+            indep_WZ_31 = rmse_norm_31 <= WZ_THRESHOLD
 
-        df = pd.DataFrame({
-            "z": zc,
-            f"{metric}_fine": phi_f, f"{metric}_med": phi_m, f"{metric}_coarse": phi_c,
-            f"{metric}_extrap": phi_ext, "p_local": p_local,
-            "GCI_21": GCI_21, "GCI_32": GCI_32,
-            "RMSEnorm_21": RMSE_norm_21, "RMSEnorm_32": RMSE_norm_32,
-            "RMSEgci_like_21": RMSE_gci_like_21, "RMSEgci_like_32": RMSE_gci_like_32
-        })
-        if phi_exp_interp is not None:
-            df["phi_exp_interp"] = phi_exp_interp
-        df.to_csv(outdir / f"summary_{metric}.csv", index=False)
+            cv_rmse_21 = cv_rmse_field(F_m, F_f, M21)
+            cv_rmse_31 = cv_rmse_field(F_c, F_f, M31)
+            r2_21 = r2_field(F_m, F_f, M21)
+            r2_31 = r2_field(F_c, F_f, M31)
 
-        # 7) Logs + decisión de independencia (W&Z ~ 10%)
-        indep_21 = RMSE_norm_21 <= independence_threshold
-        print(f"[x={xval:.2f}] p≈{p_eff:.2f} | RMSE_norm(21)={RMSE_norm_21:.2%} "
-              f"| RMSE_norm(32)={RMSE_norm_32:.2%} "
-              f"| indep(21)={'OK' if indep_21 else 'NO'}  (umbral={independence_threshold:.0%})")
-        if phi_exp_interp is not None:
-            print(f"   NRMSE vs exp: fine={nrmse_f:.2%}, med={nrmse_m:.2%}, coarse={nrmse_c:.2%}")
+            indep_Lee_21 = (cv_rmse_21 <= LEE_CV_THRESHOLD) and (r2_21 >= LEE_R2_THRESHOLD)
+            indep_Lee_31 = (cv_rmse_31 <= LEE_CV_THRESHOLD) and (r2_31 >= LEE_R2_THRESHOLD)
 
-# ============================
-# Ejemplo de uso
-# ============================
+            # 5) Perfiles U(x) y U(z) para U (si comp=="u")
+            if comp == "u":
+                Ux_f_x, Ux_f_z = compute_profiles_ux(F_f)
+                Ux_m_x, Ux_m_z = compute_profiles_ux(F_m)
+                Ux_c_x, Ux_c_z = compute_profiles_ux(F_c)
+
+                df_x = pd.DataFrame({
+                    "x": xc,
+                    f"{comp}_fine":   Ux_f_x,
+                    f"{comp}_medium": Ux_m_x,
+                    f"{comp}_coarse": Ux_c_x,
+                })
+                df_z = pd.DataFrame({
+                    "z": zc,
+                    f"{comp}_fine":   Ux_f_z,
+                    f"{comp}_medium": Ux_m_z,
+                    f"{comp}_coarse": Ux_c_z,
+                })
+                df_x.to_csv(OUT / f"group{g:02d}_{comp}_profile_x.csv", index=False)
+                df_z.to_csv(OUT / f"group{g:02d}_{comp}_profile_z.csv", index=False)
+
+            # 6) Guardar métricas por grupo (entre mallas)
+            all_metrics.append({
+                "group": g,
+                "component": comp,
+                "r12": r12, "r23": r23,
+                "rmse_norm_21": rmse_norm_21,
+                "rmse_norm_31": rmse_norm_31,
+                "gci_like_21": gci_like_21,
+                "gci_like_31": gci_like_31,
+                "cv_rmse_21": cv_rmse_21,
+                "cv_rmse_31": cv_rmse_31,
+                "r2_21": r2_21,
+                "r2_31": r2_31,
+                "indep_WZ_21": indep_WZ_21,
+                "indep_WZ_31": indep_WZ_31,
+                "indep_Lee_21": indep_Lee_21,
+                "indep_Lee_31": indep_Lee_31,
+            })
+
+    # 7) CSV maestro de métricas entre mallas
+    df_metrics = pd.DataFrame(all_metrics)
+    df_metrics.to_csv(OUT / "groups_metrics.csv", index=False)
+
+    # 8) Residual sintético por grupo y malla (en TODO el dominio común)
+    residual_records = []
+    for comp in COMPONENTS:
+        for mesh_label, fields_dict in (("fine", fields_f),
+                                        ("medium", fields_m),
+                                        ("coarse", fields_c)):
+            prev_F = None
+            prev_M = None
+            for g in range(n_groups):
+                F, M = fields_dict[comp][g]
+                if prev_F is None:
+                    res_val = np.nan
+                else:
+                    # RMSE sobre intersección de celdas válidas en ambos grupos
+                    Mboth = M & prev_M
+                    if not np.any(Mboth):
+                        res_val = np.nan
+                    else:
+                        diff = (F - prev_F)[Mboth]
+                        res_val = np.sqrt(np.nanmean(diff**2))
+                residual_records.append({
+                    "group": g,
+                    "component": comp,
+                    "mesh": mesh_label,
+                    "residual_like": res_val,
+                })
+                prev_F, prev_M = F, M
+
+    df_res = pd.DataFrame(residual_records)
+    df_res.to_csv(OUT / "groups_residual_like.csv", index=False)
+
+    # 9) Log resumido
+    print("=== MÉTRICAS POR TANDA (grupo) ===")
+    for comp in COMPONENTS:
+        sub = df_metrics[df_metrics["component"] == comp]
+        print(f"\n[{comp}]")
+        for _, r in sub.iterrows():
+            g = int(r["group"])
+            print(f" group {g:02d} | "
+                  f"RMSEnorm21={r['rmse_norm_21']:.2%}, CV21={r['cv_rmse_21']:.2%}, R2_21={r['r2_21']:.3f} "
+                  f"| indep_Lee_21={'OK' if r['indep_Lee_21'] else 'NO'}")
+
+    print("\n=== Residual sintético guardado en groups_residual_like.csv ===")
 
 if __name__ == "__main__":
-    BASE_MESH = "HexSweep"           # carpeta bajo CFD_Profiles/<BASE_MESH>/SizeN/
-    SIZE_TRIPLET = (3, 4, 5)          # etiquetas 'Size*' de tus tres mallas
-    H_TRIPLET    = (0.003, 0.004, 0.005)  # tamaños característicos h (misma métrica)
-    X_TARGETS    = [0.10, 0.11, 0.12, 0.13]  # deben coincidir con los nombres de archivo (2 decimales)
-    METRIC       = "u"                # 'u' (ux) o 'v' (uz)
-    SCHEME_P     = 2                  # orden del esquema usado (1, 2 o 3) para el indicador “GCI-like”
-
-    # (Opcional) mapas de experimento por x (CSV: cols z,phi | TXT: mismo formato CFD)
-    EXP_PATHS = {
-        # 0.12: Path("exp/u_profile_x0p12.csv"),
-        # 0.29: Path("exp/perfiles_x=0.29.txt"),
-    }
-
-    analyze_three_meshes_txt(
-        base_mesh=BASE_MESH,
-        size_triplet=SIZE_TRIPLET,
-        h_triplet=H_TRIPLET,
-        x_targets=X_TARGETS,
-        metric=METRIC,
-        scheme_order_p=SCHEME_P,
-        smooth_last_n=5,
-        out_root=Path("out_WZ"),
-        exp_paths=EXP_PATHS,
-        independence_threshold=0.10  # ~10% como en W&Z
-    )
+    main()
