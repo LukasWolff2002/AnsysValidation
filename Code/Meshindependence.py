@@ -10,12 +10,18 @@ import matplotlib.pyplot as plt
 # =========================
 
 """
-HAY QUE ARREGLARLO PARA QUE LEA TODO TIPO DE MALLAS Y NO SOLO HexSweep,
+HAY QUE ARREGLARLO PARA QUE LEA TOD TIPO DE MALLAS Y NO SOLO HexSweep,
 TAMBIÉN, QUE DISTINGA LOS DISTINTOS TAMAÑOS DE MALLA (Size3,4,5) Y QUE 
 GRACIAS A ESE NUMERO DEFINA EL TAMAÑO DE H.
 """
 
-
+"""
+Hacer 1 corte antes de la salida de la L y 4 en la viga
+Promediar todas las velocidades asociadas a todo el transcurso de tiempo para todos los valores de y 
+asociados a cada valor de x (en el corte antes de la L y en los 4 cortes de la viga)
+Eso era un metodo de medicion que me enseño el profe
+ahi hago polilíneas y comparo entre mallas
+"""
 
 BASE = Path("CFD_Solution")   # raíz de tus resultados Fluent
 MESH_NAME = "HexSweep"        # CFD_Solution/<MESH_NAME>/SizeN/...
